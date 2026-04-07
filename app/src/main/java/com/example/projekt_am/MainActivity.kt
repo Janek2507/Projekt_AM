@@ -8,22 +8,31 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import com.example.projekt_am.databinding.ActivityMainBinding
+import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+
+    private fun getResId(resName: String, resType: String): Int {
+        return resources.getIdentifier(resName, resType, packageName)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val layoutId = getResId("activity_main", "layout")
+        if (layoutId != 0) {
+            setContentView(layoutId)
+        }
 
-        setSupportActionBar(binding.toolbar)
+        val toolbarId = getResId("toolbar", "id")
+        if (toolbarId != 0) {
+            val toolbar = findViewById<Toolbar>(toolbarId)
+            setSupportActionBar(toolbar)
+        }
 
-        val navHostId = resources.getIdentifier("nav_host_fragment_content_main", "id", packageName)
+        val navHostId = getResId("nav_host_fragment_content_main", "id")
         if (navHostId != 0) {
             val navController = findNavController(navHostId)
             appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -32,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuId = resources.getIdentifier("menu_main", "menu", packageName)
+        val menuId = getResId("menu_main", "menu")
         if (menuId != 0) {
             menuInflater.inflate(menuId, menu)
         }
@@ -40,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val settingsId = resources.getIdentifier("action_settings", "id", packageName)
+        val settingsId = getResId("action_settings", "id")
         return when (item.itemId) {
             settingsId -> true
             else -> super.onOptionsItemSelected(item)
@@ -48,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navHostId = resources.getIdentifier("nav_host_fragment_content_main", "id", packageName)
+        val navHostId = getResId("nav_host_fragment_content_main", "id")
         if (navHostId != 0) {
             val navController = findNavController(navHostId)
             return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

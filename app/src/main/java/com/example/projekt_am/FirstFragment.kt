@@ -6,21 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import com.example.projekt_am.databinding.FragmentFirstBinding
+import com.google.android.material.textfield.TextInputLayout
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
-
-    private var _binding: FragmentFirstBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     private var totalWaterMl: Int = 0
 
@@ -31,25 +29,36 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        return binding.root
-
+    ): View? {
+        val layoutId = getResId("fragment_first", "layout")
+        return if (layoutId != 0) {
+            inflater.inflate(layoutId, container, false)
+        } else {
+            null
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateWaterDisplay()
+        updateWaterDisplay(view)
 
-        binding.buttonAddWater.setOnClickListener {
-            val inputStr = binding.edittextWaterInput.text.toString()
+        val buttonAddWater = view.findViewById<Button>(getResId("button_add_water", "id"))
+        val edittextWaterInput = view.findViewById<EditText>(getResId("edittext_water_input", "id"))
+        val buttonAdd250 = view.findViewById<Button>(getResId("button_add_250", "id"))
+        val buttonAdd500 = view.findViewById<Button>(getResId("button_add_500", "id"))
+        val buttonReset = view.findViewById<Button>(getResId("button_reset", "id"))
+        val iconClose = view.findViewById<ImageView>(getResId("icon_close", "id"))
+        val iconLanguage = view.findViewById<ImageView>(getResId("icon_language", "id"))
+        val buttonFirst = view.findViewById<Button>(getResId("button_first", "id"))
+
+        buttonAddWater?.setOnClickListener {
+            val inputStr = edittextWaterInput?.text?.toString() ?: ""
             if (inputStr.isNotEmpty()) {
                 val amount = inputStr.toIntOrNull()
                 if (amount != null && amount > 0) {
-                    addWater(amount)
-                    binding.edittextWaterInput.text?.clear()
+                    addWater(amount, view)
+                    edittextWaterInput?.text?.clear()
                 } else {
                     val errorId = getResId("invalid_amount_error", "string")
                     if (errorId != 0) {
@@ -59,28 +68,27 @@ class FirstFragment : Fragment() {
             }
         }
 
-        binding.buttonAdd250.setOnClickListener {
-            addWater(250)
+        buttonAdd250?.setOnClickListener {
+            addWater(250, view)
         }
 
-        binding.buttonAdd500.setOnClickListener {
-            addWater(500)
+        buttonAdd500?.setOnClickListener {
+            addWater(500, view)
         }
 
-        binding.buttonReset.setOnClickListener {
-            showResetConfirmationDialog()
+        buttonReset?.setOnClickListener {
+            showResetConfirmationDialog(view)
         }
         
-        // Top bar icon listeners
-        binding.iconClose.setOnClickListener {
+        iconClose?.setOnClickListener {
             showQuitConfirmationDialog()
         }
         
-        binding.iconLanguage.setOnClickListener {
+        iconLanguage?.setOnClickListener {
             Toast.makeText(context, "Language selection coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        binding.buttonFirst.setOnClickListener {
+        buttonFirst?.setOnClickListener {
             val actionId = getResId("action_FirstFragment_to_SecondFragment", "id")
             if (actionId != 0) {
                 findNavController().navigate(actionId)
@@ -88,7 +96,7 @@ class FirstFragment : Fragment() {
         }
     }
 
-    private fun showResetConfirmationDialog() {
+    private fun showResetConfirmationDialog(view: View) {
         val builder = AlertDialog.Builder(requireContext())
         val titleId = getResId("reset_dialog_title", "string")
         val messageId = getResId("reset_dialog_message", "string")
@@ -100,13 +108,13 @@ class FirstFragment : Fragment() {
 
         if (yesId != 0) {
             builder.setPositiveButton(yesId) { _: DialogInterface, _: Int ->
-                handleResetChoice(true)
+                handleResetChoice(true, view)
             }
         }
 
         if (noId != 0) {
             builder.setNegativeButton(noId) { dialog: DialogInterface, _: Int ->
-                handleResetChoice(false)
+                handleResetChoice(false, view)
                 dialog.dismiss()
             }
         }
@@ -114,9 +122,9 @@ class FirstFragment : Fragment() {
         builder.create().show()
     }
 
-    private fun handleResetChoice(choice: Boolean) {
+    private fun handleResetChoice(choice: Boolean, view: View) {
         if (choice) {
-            resetWaterIntake()
+            resetWaterIntake(view)
         }
     }
 
@@ -152,26 +160,22 @@ class FirstFragment : Fragment() {
         }
     }
 
-    private fun addWater(amount: Int) {
+    private fun addWater(amount: Int, view: View) {
         totalWaterMl += amount
-        updateWaterDisplay()
+        updateWaterDisplay(view)
     }
 
-    private fun resetWaterIntake() {
+    private fun resetWaterIntake(view: View) {
         totalWaterMl = 0
-        updateWaterDisplay()
+        updateWaterDisplay(view)
     }
 
-    private fun updateWaterDisplay() {
+    private fun updateWaterDisplay(view: View) {
         val formatId = getResId("water_amount_format", "string")
-        if (formatId != 0) {
-            binding.textviewWaterAmount.text = getString(formatId, totalWaterMl)
+        val textViewId = getResId("textview_water_amount", "id")
+        if (formatId != 0 && textViewId != 0) {
+            view.findViewById<TextView>(textViewId)?.text = getString(formatId, totalWaterMl)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -183,7 +187,7 @@ class FirstFragment : Fragment() {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null) {
             totalWaterMl = savedInstanceState.getInt("total_water", 0)
-            updateWaterDisplay()
+            view?.let { updateWaterDisplay(it) }
         }
     }
 }
