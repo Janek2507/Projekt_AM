@@ -1,5 +1,6 @@
 package com.example.projekt_am
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import com.example.projekt_am.R
 import com.example.projekt_am.databinding.FragmentFirstBinding
 
 /**
@@ -82,14 +84,12 @@ class FirstFragment : Fragment() {
         builder.setTitle(R.string.reset_dialog_title)
         builder.setMessage(R.string.reset_dialog_message)
 
-        builder.setPositiveButton(R.string.yes) { _, _ ->
-            val yes = true // 1
-            handleResetChoice(yes)
+        builder.setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+            handleResetChoice(true)
         }
 
-        builder.setNegativeButton(R.string.no) { dialog, _ ->
-            val no = false // 0
-            handleResetChoice(no)
+        builder.setNegativeButton(R.string.no) { dialog: DialogInterface, _: Int ->
+            handleResetChoice(false)
             dialog.dismiss()
         }
 
@@ -107,14 +107,12 @@ class FirstFragment : Fragment() {
         builder.setTitle(R.string.quit_dialog_title)
         builder.setMessage(R.string.quit_dialog_message)
 
-        builder.setPositiveButton(R.string.yes) { _, _ ->
-            val yes = true // 1
-            handleQuitChoice(yes)
+        builder.setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+            handleQuitChoice(true)
         }
 
-        builder.setNegativeButton(R.string.no) { dialog, _ ->
-            val no = false // 0
-            handleQuitChoice(no)
+        builder.setNegativeButton(R.string.no) { dialog: DialogInterface, _: Int ->
+            handleQuitChoice(false)
             dialog.dismiss()
         }
 
