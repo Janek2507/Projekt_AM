@@ -7,6 +7,26 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="total_water_label">Total Water Intake:</string>
+    <string name="water_amount_format">%1$d ml</string>
+    <string name="add_water_hint">Add amount (ml)</string>
+    <string name="add_button_text">Add</string>
+    <string name="add_250_ml">+250 ml</string>
+    <string name="add_500_ml">+500 ml</string>
+    <string name="reset_button_text">Reset</string>
+    <string name="invalid_amount_error">Please enter a valid amount</string>
+
+    <string name="desc_close_app">Close App</string>
+    <string name="desc_change_language">Change Language</string>
+    <string name="desc_reset_intake">Reset Intake</string>
+
+    <string name="reset_dialog_title">Reset Progress</string>
+    <string name="reset_dialog_message">Are you sure you want to reset your progress? It can\'t be restored!</string>
+    <string name="quit_dialog_title">Quit App</string>
+    <string name="quit_dialog_message">Are you sure you want to quit? You can come back anytime!</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
@@ -21,7 +41,7 @@
         molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
         bibendum, vel congue leo egestas.\n\n
         Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
-        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
+        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, findibus orci vel,
         molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
         interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
         lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
@@ -37,7 +57,7 @@
         convallis.\n\n
         Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
         malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
-        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
+        |gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
         libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
         sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
