@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import com.example.projekt_am.R
 import com.example.projekt_am.databinding.FragmentFirstBinding
 
 /**
@@ -24,6 +23,10 @@ class FirstFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var totalWaterMl: Int = 0
+
+    private fun getResId(resName: String, resType: String): Int {
+        return resources.getIdentifier(resName, resType, requireContext().packageName)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,10 @@ class FirstFragment : Fragment() {
                     addWater(amount)
                     binding.edittextWaterInput.text?.clear()
                 } else {
-                    Toast.makeText(context, getString(R.string.invalid_amount_error), Toast.LENGTH_SHORT).show()
+                    val errorId = getResId("invalid_amount_error", "string")
+                    if (errorId != 0) {
+                        Toast.makeText(context, getString(errorId), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -75,22 +81,34 @@ class FirstFragment : Fragment() {
         }
 
         binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            val actionId = getResId("action_FirstFragment_to_SecondFragment", "id")
+            if (actionId != 0) {
+                findNavController().navigate(actionId)
+            }
         }
     }
 
     private fun showResetConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(R.string.reset_dialog_title)
-        builder.setMessage(R.string.reset_dialog_message)
+        val titleId = getResId("reset_dialog_title", "string")
+        val messageId = getResId("reset_dialog_message", "string")
+        val yesId = getResId("yes", "string")
+        val noId = getResId("no", "string")
 
-        builder.setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-            handleResetChoice(true)
+        if (titleId != 0) builder.setTitle(titleId)
+        if (messageId != 0) builder.setMessage(messageId)
+
+        if (yesId != 0) {
+            builder.setPositiveButton(yesId) { _: DialogInterface, _: Int ->
+                handleResetChoice(true)
+            }
         }
 
-        builder.setNegativeButton(R.string.no) { dialog: DialogInterface, _: Int ->
-            handleResetChoice(false)
-            dialog.dismiss()
+        if (noId != 0) {
+            builder.setNegativeButton(noId) { dialog: DialogInterface, _: Int ->
+                handleResetChoice(false)
+                dialog.dismiss()
+            }
         }
 
         builder.create().show()
@@ -104,16 +122,25 @@ class FirstFragment : Fragment() {
 
     private fun showQuitConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(R.string.quit_dialog_title)
-        builder.setMessage(R.string.quit_dialog_message)
+        val titleId = getResId("quit_dialog_title", "string")
+        val messageId = getResId("quit_dialog_message", "string")
+        val yesId = getResId("yes", "string")
+        val noId = getResId("no", "string")
 
-        builder.setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-            handleQuitChoice(true)
+        if (titleId != 0) builder.setTitle(titleId)
+        if (messageId != 0) builder.setMessage(messageId)
+
+        if (yesId != 0) {
+            builder.setPositiveButton(yesId) { _: DialogInterface, _: Int ->
+                handleQuitChoice(true)
+            }
         }
 
-        builder.setNegativeButton(R.string.no) { dialog: DialogInterface, _: Int ->
-            handleQuitChoice(false)
-            dialog.dismiss()
+        if (noId != 0) {
+            builder.setNegativeButton(noId) { dialog: DialogInterface, _: Int ->
+                handleQuitChoice(false)
+                dialog.dismiss()
+            }
         }
 
         builder.create().show()
@@ -136,7 +163,10 @@ class FirstFragment : Fragment() {
     }
 
     private fun updateWaterDisplay() {
-        binding.textviewWaterAmount.text = getString(R.string.water_amount_format, totalWaterMl)
+        val formatId = getResId("water_amount_format", "string")
+        if (formatId != 0) {
+            binding.textviewWaterAmount.text = getString(formatId, totalWaterMl)
+        }
     }
 
     override fun onDestroyView() {
